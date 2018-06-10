@@ -43,7 +43,7 @@
         <!-- <activity android:name=".Activity_Map"> -->
         <!--  -->
         <!-- </activity> -->
-        <activity android:name=".signActivities.MapActivity">
+        <activity android:name=".MapActivity">
         </activity>
         <activity android:name=".Manager">
         </activity>

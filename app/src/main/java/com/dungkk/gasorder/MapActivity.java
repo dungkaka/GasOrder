@@ -1,4 +1,4 @@
-package com.dungkk.gasorder.signActivities;
+package com.dungkk.gasorder;
 
 import android.Manifest;
 import android.content.Intent;
@@ -18,8 +18,7 @@ import android.widget.*;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
-import com.dungkk.gasorder.MainActivity;
-import com.dungkk.gasorder.R;
+import com.dungkk.gasorder.extensions.GPSTracker;
 import com.dungkk.gasorder.extensions.PlaceAutocompleteAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -291,11 +290,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         try {
             if (mLocationPermissionsGranted) {
 
-                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-                criteria = new Criteria();
-                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+//                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//                criteria = new Criteria();
+//                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+//
+//                Location location = locationManager.getLastKnownLocation(bestProvider);
 
-                Location location = locationManager.getLastKnownLocation(bestProvider);
+                Location location = new GPSTracker(getApplicationContext()).getLocation();
+
                 if (location != null) {
                     Log.e(TAG, "GPS is on");
                     lat = location.getLatitude();
@@ -445,12 +447,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onPause() {
 
         super.onPause();
-        locationManager.removeUpdates(this);
+//        locationManager.removeUpdates(this);
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        locationManager.removeUpdates(this);
+//        locationManager.removeUpdates(this);
     }
 
     @Override

@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.*;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,10 +32,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.dungkk.gasorder.MainActivity;
 import com.dungkk.gasorder.passingObjects.User;
-import com.dungkk.gasorder.signActivities.MapActivity;
+import com.dungkk.gasorder.MapActivity;
 import com.dungkk.gasorder.R;
 import com.dungkk.gasorder.extensions.PlaceAutocompleteAdapter;
-import com.dungkk.gasorder.signActivities.SignUp;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -58,7 +56,6 @@ import com.dungkk.gasorder.passingObjects.Server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FragmentOrder extends Fragment implements GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemSelectedListener, View.OnClickListener {
 
@@ -251,17 +248,17 @@ public class FragmentOrder extends Fragment implements GoogleApiClient.OnConnect
                 JSONObject pos = new JSONObject();
                 gasType = new StringBuffer();
                 switch (String.valueOf(sp_gasCode.getSelectedItem())){
-                    case "12 Kg Petrolimex Cylinder (325.000 VND)":
+                    case "12 Kg Petrolimex Cylinder (300.000 VND)":
                         gasCode = 100000;
-                        gasType.append("12 Kg Petrolimex Cylinder (325.000 VND)");
+                        gasType.append("12 Kg Petrolimex Cylinder (300.000 VND)");
                         break;
-                    case "2 Kg Petrolimex Cylinder (70.000VND)":
+                    case "NaMiLux Mini Cylinder (200.000 VND)":
                         gasCode = 100100;
-                        gasType.append("2 Kg Petrolimex Cylinder (70.000VND)");
+                        gasType.append("NaMiLux Mini Cylinder (200.000 VND)");
                         break;
-                    case "48 Kg Petrolimex Cylinder (1.150.000 VND)":
+                    case "45 Kg Petrolimex Cylinder (1050000 VND)":
                         gasCode = 100200;
-                        gasType.append("48 Kg Petrolimex Cylinder (1.150.000 VND)");
+                        gasType.append("45 Kg Petrolimex Cylinder (1050000 VND)");
                         break;
                 }
 

@@ -2,7 +2,7 @@
     <string name="app_name">GasOrder</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">ORDER GAS DEVICES</string>
+    <string name="nav_header_title">ICT GAS STORE</string>
     <string name="nav_header_subtitle">group3_SE@ictk60</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -10,9 +10,9 @@
     <string name="gasCode_prompt">12 Kg Petrolimex Cylinder (325.000 VND)</string>
 
     <string-array name="gasCode">
-        <item>12 Kg Petrolimex Cylinder (325.000 VND)</item>
-        <item>2 Kg Petrolimex Cylinder (70.000VND)</item>
-        <item>48 Kg Petrolimex Cylinder (1.150.000 VND)</item>
+        <item>12 Kg Petrolimex Cylinder (300.000 VND)</item>
+        <item>NaMiLux Mini Cylinder (200.000 VND)</item>
+        <item>45 Kg Petrolimex Cylinder (1050000 VND)</item>
     </string-array>
 
     <string name="tips_text_1">     Do a body safety check before turning on your gas stove. To prevent any fires while using your gas stove, roll up your shirt sleeves above the elbow and tie back long hair with a rubber band. If you have any jewelry on, remove it before starting the stove. Turn the stove dial on to light the stove. Most gas stoves are equipped with a dial that lights the burner. You can usually adjust the heat to low, medium, and high depending on what you\'re using the stove for. Twist the dial and wait for the burner to light, then adjust it to your desired heat setting. \n
