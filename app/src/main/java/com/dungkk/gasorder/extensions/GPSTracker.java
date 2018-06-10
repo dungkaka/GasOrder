@@ -12,10 +12,6 @@ import android.widget.Toast;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-/**
- * Created by shiva on 8/4/17.
- */
-
 public class GPSTracker implements LocationListener {
 
     Context context;

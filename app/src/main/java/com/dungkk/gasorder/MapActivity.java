@@ -1,6 +1,8 @@
 package com.dungkk.gasorder;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.*;
@@ -18,7 +20,8 @@ import android.widget.*;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
-import com.dungkk.gasorder.extensions.GPSTracker;
+import com.dungkk.gasorder.MainActivity;
+import com.dungkk.gasorder.R;
 import com.dungkk.gasorder.extensions.PlaceAutocompleteAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -103,16 +106,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         ibtn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, MainActivity.class);
 
-                intent.putExtra("lat", lat);
-                intent.putExtra("lng", lng);
-                intent.putExtra("address", address);
-                intent.putExtra("ward", ward);
-                Log.e("Passing", "location object");
-                startActivity(intent);
+                if((lat == null) && (lng == null) && (address == null) && (ward == null)){
+                    Toast.makeText(v.getContext(), "Location is NULL", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                    intent.putExtra("lat", lat);
+                    intent.putExtra("lng", lng);
+                    intent.putExtra("address", address);
+                    intent.putExtra("ward", ward);
+                    Log.e("Passing", "location object");
+                    startActivity(intent);
 
-                finish();
+                    finish();
+                }
 
 
             }
@@ -290,14 +298,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         try {
             if (mLocationPermissionsGranted) {
 
-//                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-//                criteria = new Criteria();
-//                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
-//
-//                Location location = locationManager.getLastKnownLocation(bestProvider);
+                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+                criteria = new Criteria();
+                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
 
-                Location location = new GPSTracker(getApplicationContext()).getLocation();
-
+                Location location = locationManager.getLastKnownLocation(bestProvider);
                 if (location != null) {
                     Log.e(TAG, "GPS is on");
                     lat = location.getLatitude();
@@ -447,12 +452,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onPause() {
 
         super.onPause();
-//        locationManager.removeUpdates(this);
+        locationManager.removeUpdates(this);
     }
 
     @Override
     public void onLocationChanged(Location location) {
-//        locationManager.removeUpdates(this);
+        locationManager.removeUpdates(this);
     }
 
     @Override
@@ -469,5 +474,5 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onProviderDisabled(String provider) {
 
     }
-
+    
 }
