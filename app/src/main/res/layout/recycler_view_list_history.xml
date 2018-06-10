@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border_text_gray"
+    android:background="@drawable/border_text"
     android:layout_margin="@dimen/fab_margin">
 
     <TextView
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/address"
-        android:layout_alignBottom="@+id/address"
+        android:layout_alignTop="@+id/address"
         android:layout_marginStart="10dp"
         android:textColor="@color/black"/>
 
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/date"
-        android:layout_below="@+id/address"
+        android:layout_below="@+id/htr_address"
         android:layout_marginTop="5dp"
         android:text="Brand: " />
 

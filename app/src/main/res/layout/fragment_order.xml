@@ -181,7 +181,8 @@
         android:layout_alignParentBottom="true"
         android:text="Confirm Order"
         android:textStyle="bold"
-        android:background="@color/gray"/>
+        android:background="@color/orange"
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>

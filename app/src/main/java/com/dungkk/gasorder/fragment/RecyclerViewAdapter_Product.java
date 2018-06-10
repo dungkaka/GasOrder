@@ -41,9 +41,14 @@ public class RecyclerViewAdapter_Product extends RecyclerView.Adapter<RecyclerVi
 
     public RecyclerViewAdapter_Product(JSONArray products, int type) throws JSONException {
         int i;
+
+        if(type == 4) {
+            this.products = products;
+            return;
+        }
+
         for(i = 0; i < products.length(); i++) {
             if( products.getJSONObject(i).getInt("type") == type ) {
-//                Log.d("/////////////////", products.getJSONObject(i).getInt("type")+"");
                 this.products.put(products.getJSONObject(i));
             }
         }

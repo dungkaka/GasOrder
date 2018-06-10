@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,12 +51,11 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
 
     RecyclerView recyclerView;
     private Toolbar toolbar;
-    LinearLayout gas, devices, maintenanceServices, allProduct;
+    LinearLayout gas, devices, maintenanceServices, allProduct, product;
     TextView textGas, textDevices, textMaintance, textAllProduct;
     ImageView iconGas, iconDevices, iconMaintance, iconAllProduct;
     String url = Server.getAddress() + "/products";
-    static JSONArray productArrays = new JSONArray();
-    ;
+    static JSONArray products;
 
     @Nullable
     @Override
@@ -75,91 +75,10 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
         startInitSelect(allProduct, textAllProduct, iconAllProduct, R.drawable.all_white);
         startInitUnSelect(devices, textDevices, iconDevices, R.drawable.device);
         startInitUnSelect(maintenanceServices, textMaintance, iconMaintance, R.drawable.maintanance);
-        //getArrayType(4);
-
-        new GetData().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        getArrayProduct();
 
     }
 
-
-//    private void getArrayType(final int type) {
-//
-//        final JSONArray products = new JSONArray();
-//
-//        JSONArray productArr = new JSONArray();
-//
-//        final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-//        final JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.POST, url, productArr,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        try {
-//
-//                            RecyclerViewAdapter_Product adapter;
-//                            // do here
-//                            if(type == 4) {
-//                                adapter = new RecyclerViewAdapter_Product(response);
-//                            }
-//
-//                            else {
-//                                for(int i = 0; i < response.length(); i++) {
-//                                    if(response.getJSONObject(i).getInt("type") == type) {
-//                                        products.put(response.getJSONObject(i));
-//                                    }
-//                                }
-//
-//                                adapter = new RecyclerViewAdapter_Product(products);
-//                            }
-//
-//
-//                            recyclerView = (RecyclerView) getView().findViewById(R.id.rv_product);
-//                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//                            recyclerView.setLayoutManager(layoutManager);
-//                            recyclerView.setAdapter(adapter);
-//
-//                            Log.e("History", response.getJSONObject(0).toString());
-//
-//                        } catch (JSONException e) {
-//
-//                            // create a alterDialog Builder
-//                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-//
-//                            alertDialogBuilder.setTitle("Empty List").setMessage("No product available ... !").setNegativeButton("OK", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//                            AlertDialog alertDialog = alertDialogBuilder.create();
-//                            alertDialog.show();
-//                        }
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//
-//                        // create a alterDialog Builder
-//                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-//
-//                        alertDialogBuilder.setTitle("Connection failed").setMessage("Please check the internet connection again...").setNegativeButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//                        AlertDialog alertDialog = alertDialogBuilder.create();
-//                        alertDialog.show();
-//                    }
-//                }
-//        );
-//
-//        requestQueue.add(jsonObjectRequest);
-//    }
 
     private void startInitSelect(LinearLayout linearLayout, TextView textView, ImageView imageView, int id) {
         linearLayout.setBackgroundColor(Color.parseColor("#FFBC4747"));
@@ -190,6 +109,13 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
         devices = getView().findViewById(R.id.product_devices);
         maintenanceServices = getView().findViewById(R.id.maintenance_service);
         allProduct = getView().findViewById(R.id.all_product);
+        product = getView().findViewById(R.id.product_layout);
+        product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         gas.setOnClickListener(this);
         devices.setOnClickListener(this);
@@ -215,11 +141,73 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void getArrayProduct() {
+
+        final JSONArray productArr = new JSONArray();
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.POST, url, productArr,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+
+                            products = response;
+
+                            RecyclerViewAdapter_Product adapter = new RecyclerViewAdapter_Product(products);
+                            recyclerView = getView().findViewById(R.id.rv_product);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                            recyclerView.setLayoutManager(layoutManager);
+                            recyclerView.setAdapter(adapter);
+
+                            Log.e("History", response.getJSONObject(0).toString());
+
+                        } catch (JSONException e) {
+
+                            // create a alterDialog Builder
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+                            alertDialogBuilder.setTitle("Empty List").setMessage("No product available ... !").setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        // create a alterDialog Builder
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+                        alertDialogBuilder.setTitle("Connection failed").setMessage("Please check the internet connection again...").setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    }
+                }
+        );
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
     public void getArrayTypeGas(int type) {
-        RecyclerViewAdapter_Product adapter = null;
         try {
-            if (productArrays != null && productArrays.length() > 0) {
-                adapter = new RecyclerViewAdapter_Product(productArrays, type);
+
+            if (products != null && products.length() > 0) {
+                RecyclerViewAdapter_Product adapter = new RecyclerViewAdapter_Product(products, type);
                 recyclerView = (RecyclerView) getView().findViewById(R.id.rv_product);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerView.setLayoutManager(layoutManager);
@@ -241,7 +229,6 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
                 startInitUnSelect(allProduct, textAllProduct, iconAllProduct, R.drawable.all);
                 startInitUnSelect(devices, textDevices, iconDevices, R.drawable.device);
                 startInitUnSelect(maintenanceServices, textMaintance, iconMaintance, R.drawable.maintanance);
-                //getArrayType(1);
                 getArrayTypeGas(1);
                 break;
             case R.id.product_devices:
@@ -249,7 +236,6 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
                 startInitUnSelect(allProduct, textAllProduct, iconAllProduct, R.drawable.all);
                 startInitSelect(devices, textDevices, iconDevices, R.drawable.device_white);
                 startInitUnSelect(maintenanceServices, textMaintance, iconMaintance, R.drawable.maintanance);
-                //getArrayType(2);
                 getArrayTypeGas(2);
                 break;
             case R.id.maintenance_service:
@@ -257,7 +243,6 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
                 startInitUnSelect(allProduct, textAllProduct, iconAllProduct, R.drawable.all);
                 startInitUnSelect(devices, textDevices, iconDevices, R.drawable.device);
                 startInitSelect(maintenanceServices, textMaintance, iconMaintance, R.drawable.maintanance_white);
-                //getArrayType(3);
                 getArrayTypeGas(3);
                 break;
             case R.id.all_product:
@@ -265,69 +250,35 @@ public class FragmentProducts extends Fragment implements View.OnClickListener {
                 startInitSelect(allProduct, textAllProduct, iconAllProduct, R.drawable.all_white);
                 startInitUnSelect(devices, textDevices, iconDevices, R.drawable.device);
                 startInitUnSelect(maintenanceServices, textMaintance, iconMaintance, R.drawable.maintanance);
-                //getArrayType(4);
+                getArrayTypeGas(4);
+                break;
+            case R.id.product_layout:
+                break;
 
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
-    class GetData extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            JSONArray productArr = new JSONArray();
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.POST, url, productArr,
-                    new Response.Listener<JSONArray>() {
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            try {
-                                // do here
-                                productArrays = response;
-
-                                RecyclerViewAdapter_Product adapter = new RecyclerViewAdapter_Product(productArrays);
-                                recyclerView = getView().findViewById(R.id.rv_product);
-                                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                                recyclerView.setLayoutManager(layoutManager);
-                                recyclerView.setAdapter(adapter);
-
-                                Log.e("History", response.getJSONObject(0).toString());
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                        }
-                    }
-            );
-
-            requestQueue.add(jsonObjectRequest);
+        if(getView() == null){
+            return;
         }
 
-        @Override
-        protected String doInBackground(String... strings) {
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            Toast.makeText(getContext(), "" + productArrays, Toast.LENGTH_LONG).show();
-
-        }
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    return true;
+                }
+                return false;
+            }
+        });
     }
-
 
 }
 

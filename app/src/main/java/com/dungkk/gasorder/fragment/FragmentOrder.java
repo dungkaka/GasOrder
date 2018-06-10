@@ -36,6 +36,7 @@ import com.dungkk.gasorder.passingObjects.User;
 import com.dungkk.gasorder.signActivities.MapActivity;
 import com.dungkk.gasorder.R;
 import com.dungkk.gasorder.extensions.PlaceAutocompleteAdapter;
+import com.dungkk.gasorder.signActivities.SignUp;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -61,7 +62,9 @@ import java.util.Objects;
 
 public class FragmentOrder extends Fragment implements GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    // returned vars
+    private FragmentTransaction transaction;
+
+    // returned var
     private LatLng pos;
     private String address;
     private String ward;
@@ -106,6 +109,31 @@ public class FragmentOrder extends Fragment implements GoogleApiClient.OnConnect
     public String bestProvider;
     private  Toolbar toolbar;
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    // handle back button's click listener
+//                    Intent intent = new Intent(getContext(), MainActivity.class);
+//                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -286,7 +314,7 @@ public class FragmentOrder extends Fragment implements GoogleApiClient.OnConnect
                                         alertDialogBuilder.setMessage(mess).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                replaceFragment(new FragmentMain());
+
                                             }
                                         });
 
@@ -609,12 +637,6 @@ public class FragmentOrder extends Fragment implements GoogleApiClient.OnConnect
 
     }
 
-    private void replaceFragment(Fragment fragment){
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.content_main, fragment).commit();
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getContext(), "You choose: " + parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
@@ -646,18 +668,27 @@ public class FragmentOrder extends Fragment implements GoogleApiClient.OnConnect
 
     }
 
+    private void replaceFragment(Fragment fragment){
+        FragmentManager manager = getFragmentManager();
+        transaction = manager.beginTransaction();
+        transaction.replace(R.id.content_main, fragment, FragmentOrder.class.getSimpleName())
+                .addToBackStack(FragmentOrder.class.getSimpleName())
+                .commit();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                getActivity().onBackPressed();
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
 
 }

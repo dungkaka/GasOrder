@@ -1,5 +1,6 @@
 package com.dungkk.gasorder.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -8,10 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dungkk.gasorder.MainActivity;
 import com.dungkk.gasorder.adapter.MainSliderAdapter;
 import com.dungkk.gasorder.passingObjects.location;
 import android.widget.ImageButton;
@@ -26,13 +30,36 @@ import java.io.IOException;
 public class FragmentMain extends Fragment implements View.OnClickListener{
 
     private FragmentTransaction transaction;
-    private ImageButton ibtn_order;
-    private ImageButton ibtn_products;
-    private ImageButton ibtn_tips;
     private LinearLayout layout_order, layout_product, layout_tips;
     private View view;
     private Slider slider;
     private String[] arrslides;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    System.exit(0);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,32 +67,6 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
 
 
         setSlider(view);
-
-//        ibtn_order = (ImageButton) view.findViewById(R.id.ibtn_order);
-//        ibtn_products = (ImageButton) view.findViewById(R.id.ibtn_products);
-//        ibtn_tips = (ImageButton) view.findViewById(R.id.ibtn_tips);
-//
-//        ibtn_order.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                replaceFragment(new FragmentOrder());
-//            }
-//        });
-//
-//        ibtn_products.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                replaceFragment(new FragmentProducts());
-//            }
-//        });
-//
-//
-//        ibtn_tips.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                replaceFragment(new FragmentTips());
-//            }
-//        });
 
         layout_order = view.findViewById(R.id.layout_order);
         layout_product = view.findViewById(R.id.layout_product);

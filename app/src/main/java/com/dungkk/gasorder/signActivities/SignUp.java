@@ -46,7 +46,6 @@ public class SignUp extends AppCompatActivity {
     private EditText et_phoneNumber;
     private EditText et_email;
     private Button btn_signup;
-    private TextView btn_backHome;
     private Toolbar toolbar;
 
     private int checkCount = 0;
@@ -66,7 +65,6 @@ public class SignUp extends AppCompatActivity {
         et_phoneNumber = (EditText) findViewById(R.id.et_phoneNumber);
         et_email = (EditText) findViewById(R.id.et_email);
         btn_signup = (Button) findViewById(R.id.btn_signup);
-        btn_backHome = (TextView) findViewById(R.id.btn_backHome);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
@@ -81,14 +79,6 @@ public class SignUp extends AppCompatActivity {
 //        check = new checkSignUpValidation(et_firstName, et_lastName, et_username, et_password, et_password2, et_phoneNumber, et_email, btn_signup);
 //        check.start();
 
-        btn_backHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignUp.this, MainActivity.class);
-//                check.stop();
-                startActivity(intent);
-            }
-        });
 
 
         et_firstName.addTextChangedListener(new TextWatcher() {
@@ -266,7 +256,7 @@ public class SignUp extends AppCompatActivity {
                         user.put("firstName", et_firstName.getText().toString());
                         user.put("lastName", et_lastName.getText().toString());
                         user.put("username", et_username.getText().toString());
-                        user.put("password", et_firstName.getText().toString());
+                        user.put("password", et_password.getText().toString());
                         user.put("phoneNumber", et_phoneNumber.getText().toString());
                         user.put("email", et_email.getText().toString());
                     }

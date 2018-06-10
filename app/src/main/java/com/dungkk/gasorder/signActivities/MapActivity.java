@@ -111,8 +111,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 intent.putExtra("address", address);
                 intent.putExtra("ward", ward);
                 Log.e("Passing", "location object");
-
                 startActivity(intent);
+
+                finish();
+
+
             }
         });
 
@@ -464,4 +467,5 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onProviderDisabled(String provider) {
 
     }
+
 }

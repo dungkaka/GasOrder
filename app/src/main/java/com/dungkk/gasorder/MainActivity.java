@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentTransaction transaction;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bundle.putString("address", addr);
             bundle.putString("ward", ward);
             fragmentOrder.setArguments(bundle);
-            replaceFragment(fragmentOrder);
+            replaceFragmentMore(fragmentOrder);
         } else {
             replaceFragment(new FragmentMain());
         }
@@ -138,9 +139,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 super.onBackPressed();
             }
         } else {
-            getFragmentManager().popBackStack();
+            //getFragmentManager().popBackStack();
+            System.exit(0);
         }
-
 
     }
 
@@ -215,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 
 }

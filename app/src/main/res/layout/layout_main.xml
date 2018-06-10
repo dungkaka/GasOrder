@@ -78,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="PRODUCT"
+                    android:text="PRODUCTS"
                     android:textSize="30dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"/>
@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="TIPS                  AND USING"
+                    android:text="TIPS                  FOR USING"
                     android:textSize="30dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"/>

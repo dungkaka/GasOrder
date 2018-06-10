@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +29,10 @@ import org.json.JSONObject;
 
 public class FragmentProfile extends Fragment{
 
-    private TextView fullname;
+    private TextView fullname, username, phoneNumber, email;
     private final static String url = Server.getAddress() + "/profile";
     private Toolbar toolbar;
+    LinearLayout profile;
 
     @Nullable
     @Override
@@ -58,10 +61,15 @@ public class FragmentProfile extends Fragment{
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_LONG).show();
+
                         try {
                             if(response.getBoolean("status")){
+
                                 fullname.setText(response.getString("name"));
+                                username.setText(User.getUsername());
+                                phoneNumber.setText(response.getString("phoneNumber"));
+                                email.setText(response.getString("email"));
+
                             }
                             else {
                                 Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
@@ -88,6 +96,18 @@ public class FragmentProfile extends Fragment{
     public void init() {
 
         fullname = (TextView) getView().findViewById(R.id.fullname);
+        phoneNumber = getView().findViewById(R.id.phonenumber);
+        username = getView().findViewById(R.id.username);
+        email = getView().findViewById(R.id.email);
+        profile = getView().findViewById(R.id.fragment_profile);
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         toolbar = getView().findViewById(R.id.toolbar);
         ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getContext()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -106,6 +126,28 @@ public class FragmentProfile extends Fragment{
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 }
